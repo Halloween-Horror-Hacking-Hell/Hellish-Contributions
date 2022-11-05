@@ -30,6 +30,7 @@ function setup() {
     frameRate(20);
 
     image_background = loadImage('assets/bg.png');
+    image_leaf = loadImage('assets/moos.png');
     img_fader = new ImageFader();
 
     setupStreet();
@@ -92,6 +93,20 @@ class FadingImage {
         return this.fadeFinished;
     }
 
+
+    drawBranch(x1, y1, x2, y2, x3, y3, x4, y4) {
+	let leaf_count = 5;
+	bezier(x1, y1, x2, y2, x3, y3, x4, y4);
+
+	for (let i = 0; i <=  leaf_count; i++) {
+	    let t = i / leaf_count;;
+	    let x = bezierPoint(x1, x2, x3, x4, t);
+	    let y = bezierPoint(y1, y2, y3, y4, t);
+
+	    image(image_moos, x, y, 64, 64);
+	}
+    }
+
     draw() {
         // Only show image, as fading consumes to much power
         //tint(255, this.currentOpacity);
@@ -106,5 +121,15 @@ class FadingImage {
                 this.fadeFinished = true;
             }
         }
+
+	let i = 0;
+	while(i <= coords.length && i + 4 <= coords.length) {
+	    this.drawBranch(
+		coords[i].x, coords[i].y,
+		coords[i + 1].x, coords[i + 1].y,
+		coords[i + 2].x, coords[i + 2].y,
+		coords[i + 3].x, coords[i + 3].y);
+	    i = i+3;
+	}
     }
 }
