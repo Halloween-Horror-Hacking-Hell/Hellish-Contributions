@@ -96,7 +96,7 @@ class FadingImage {
 
     drawBranch(x1, y1, x2, y2, x3, y3, x4, y4) {
 	let leaf_count = 5;
-	bezier(x1, y1, x2, y2, x3, y3, x4, y4);
+	//bezier(x1, y1, x2, y2, x3, y3, x4, y4);
 
 	for (let i = 0; i <=  leaf_count; i++) {
 	    let t = i / leaf_count;;
@@ -121,6 +121,7 @@ class FadingImage {
                 this.fadeFinished = true;
             }
         }
+	noFill();
 	stroke(120, 255, 0, 0);
 
 	let i = 0;
