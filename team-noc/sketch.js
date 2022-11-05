@@ -103,7 +103,7 @@ class FadingImage {
 	    let x = bezierPoint(x1, x2, x3, x4, t);
 	    let y = bezierPoint(y1, y2, y3, y4, t);
 
-	    image(image_moos, x, y, 64, 64);
+	    image(image_leaf, x, y, 64, 64);
 	}
     }
 
