@@ -8,6 +8,7 @@ let width = 1920 * scale;
 let height = 1080 * scale;
 let pos_x = 0;
 let pos_y = 0;
+let count = 0;
 
 function setupStreet() {
     for (let i = 26; i >= 1; i--) {
@@ -37,9 +38,43 @@ function setup() {
     setupHouses();
 }
 
+let branch = 0;
+
 function draw() {
     background(image_background);
     img_fader.draw();
+
+    if (img_fader.isFinished()) {
+	noFill();
+	stroke(120, 255, 0, 0);
+
+	let i = 0;
+	while(i <= branch && i + 4 <= branch) {
+	    drawBranch(
+		coords[i].x, coords[i].y,
+		coords[i + 1].x, coords[i + 1].y,
+		coords[i + 2].x, coords[i + 2].y,
+		coords[i + 3].x, coords[i + 3].y);
+	    i = i+3;
+	}
+	if (branch < coords.length && count % 100) {
+	    branch++;
+	}
+    }
+    count++;
+}
+
+function drawBranch(x1, y1, x2, y2, x3, y3, x4, y4) {
+    let leaf_count = 5;
+    //bezier(x1, y1, x2, y2, x3, y3, x4, y4);
+
+    for (let i = 0; i <=  leaf_count; i++) {
+	let t = i / leaf_count;;
+	let x = bezierPoint(x1, x2, x3, x4, t);
+	let y = bezierPoint(y1, y2, y3, y4, t);
+
+	image(image_leaf, x, y, 64, 64);
+    }
 }
 
 class ImageFader {
@@ -64,6 +99,10 @@ class ImageFader {
         }
 
         this.images.forEach(img => img.draw());
+    }
+
+    isFinished() {
+	return this.currentImgIndex == this.images.length;
     }
 }
 
@@ -93,20 +132,6 @@ class FadingImage {
         return this.fadeFinished;
     }
 
-
-    drawBranch(x1, y1, x2, y2, x3, y3, x4, y4) {
-	let leaf_count = 5;
-	//bezier(x1, y1, x2, y2, x3, y3, x4, y4);
-
-	for (let i = 0; i <=  leaf_count; i++) {
-	    let t = i / leaf_count;;
-	    let x = bezierPoint(x1, x2, x3, x4, t);
-	    let y = bezierPoint(y1, y2, y3, y4, t);
-
-	    image(image_leaf, x, y, 64, 64);
-	}
-    }
-
     draw() {
         // Only show image, as fading consumes to much power
         //tint(255, this.currentOpacity);
@@ -121,17 +146,5 @@ class FadingImage {
                 this.fadeFinished = true;
             }
         }
-	noFill();
-	stroke(120, 255, 0, 0);
-
-	let i = 0;
-	while(i <= coords.length && i + 4 <= coords.length) {
-	    this.drawBranch(
-		coords[i].x, coords[i].y,
-		coords[i + 1].x, coords[i + 1].y,
-		coords[i + 2].x, coords[i + 2].y,
-		coords[i + 3].x, coords[i + 3].y);
-	    i = i+3;
-	}
     }
 }
