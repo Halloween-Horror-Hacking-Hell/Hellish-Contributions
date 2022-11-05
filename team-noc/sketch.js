@@ -121,7 +121,7 @@ class FadingImage {
                 this.fadeFinished = true;
             }
         }
-    stroke(120, 255, 0, 0);
+	stroke(120, 255, 0, 0);
 
 	let i = 0;
 	while(i <= coords.length && i + 4 <= coords.length) {
